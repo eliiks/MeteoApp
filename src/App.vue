@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, watch, onMounted } from 'vue';
+  import { ref, watch, onMounted} from 'vue';
   import weatherDict from './assets/weather_dict.js';
   import Footer from "@/components/Footer.vue";
 
@@ -41,7 +41,7 @@
   }
 
   onMounted(async () => {
-    API_token.value = "2a82b08bc2709b655a958ffdaedb64e01c71ff94fc9d39ee316d933a9e166bfa"
+    API_token.value = import.meta.env.VITE_WEATHER_API
   })
 </script>
 
