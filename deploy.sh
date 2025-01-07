@@ -8,4 +8,4 @@ cd dist
 
 git add -A
 git commit -m "New deployment"
-git push -f git@github.com:eliiks/MeteoApp.git master:gh-pages
+git push -f git@github.com:eliiks/MeteoApp.git master
