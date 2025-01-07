@@ -35,7 +35,7 @@
         townTodayWeatherIcon.value = weatherDict[townTodayWeatherCode.value].icon_class;
         searchEnd.value = true;
       }catch(error){
-        console.error("Error" + error);
+        console.error("Error on fetching API : " + error);
       }
     };
   }
