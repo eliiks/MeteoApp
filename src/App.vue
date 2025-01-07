@@ -41,8 +41,7 @@
   }
 
   onMounted(async () => {
-    const res = await fetch("../token.txt")
-    API_token.value = await res.text()
+    API_token.value = "2a82b08bc2709b655a958ffdaedb64e01c71ff94fc9d39ee316d933a9e166bfa"
   })
 </script>
 
