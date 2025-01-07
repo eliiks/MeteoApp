@@ -1,12 +1,16 @@
 <script setup>
   import { ref, watch, onMounted } from 'vue';
-  import weatherString from './assets/weather_code';
+  import weatherDict from './assets/weather_dict.js';
+  import Footer from "@/components/Footer.vue";
 
   const API_token = ref("")
   const townInput = ref("")
   const townINSEECode = ref("")
+  const townName = ref("")
   const townTodayWeatherCode = ref("")
-  const townTodayWeatherString = ref("")
+  const townTodayWeatherName = ref("")
+  const townTodayWeatherIcon = ref("")
+  const townTodayWeatherTemperature = ref("")
   const searchEnd = ref(false);
 
   watch(townInput, () => {
@@ -20,12 +24,15 @@
         const citiesResponse = await fetch("https://api.meteo-concept.com/api/location/cities?token="+API_token.value+"&search=" + townInput.value);
         const citiesData = await citiesResponse.json();
         townINSEECode.value = citiesData.cities[0].insee;
+        townName.value = citiesData.cities[0].name;
         
         //Searching for city's weather forecast of today
         const forecastResponse = await fetch("https://api.meteo-concept.com/api/forecast/daily/0?token="+API_token.value+"&insee=" + townINSEECode.value);
         const forecastData = await forecastResponse.json();
         townTodayWeatherCode.value = forecastData.forecast.weather;
-        townTodayWeatherString.value = weatherString[townTodayWeatherCode.value];
+        townTodayWeatherTemperature.value = forecastData.forecast.tmax;
+        townTodayWeatherName.value = weatherDict[townTodayWeatherCode.value].name;
+        townTodayWeatherIcon.value = weatherDict[townTodayWeatherCode.value].icon_class;
         searchEnd.value = true;
       }catch(error){
         console.error("Error" + error);
@@ -43,16 +50,29 @@
   <main class="bg-teal-400">
     <div class="flex flex-col justify-center items-center h-screen">
       <div class="m-auto text-center">
-        <h1 class="text-6xl font-bold mt-5 mb-5"> METEOAPP </h1>
-        <form class="flex flex-row items-center justify-center" @submit.prevent="SearchTownMeteo">
-            <label for="townInput" class="mr-4 text-2xl">Search a city</label> 
-            <input type="text" id="townInput" name="townInput" v-model="townInput" class="bg-white pl-3 pr-10 pt-2 pb-2 rounded-full text-xl"/>
-            <button type="submit" class="ml-3 bg-blue-400 rounded-full p-2"> 
-                <img src="./assets/search.png" width="30px"></img>
+        <h1 class="text-5xl md:text-6xl font-bold"> METEOAPP </h1>
+        
+        <!-- Form -->
+        <form class="flex items-center justify-center mt-5" @submit.prevent="SearchTownMeteo">
+            <input type="text" v-model="townInput" placeholder="Rechercher une ville" class="bg-white rounded-full pl-3 pr-10 pt-2 pb-2 text-lg md:text-xl"/>
+            <button type="submit" class="rounded-full ml-1 md:ml-3 p-2" style="background-color: #EAD637;"> 
+                <img src="./assets/search.png" class="w-7 md:w-8"></img>
             </button>
         </form>
-        <p v-show="searchEnd" class="mt-5 text-2xl"> Météo à {{ townInput }} : {{ townTodayWeatherString }} </p>
+
+        <!-- Result -->
+        <div v-show="searchEnd" class="mt-10 flex flex-col gap-3 justify-center items-center">
+          <div class="flex items-center">
+            <p class="pr-3 text-5xl md:text-6xl"> {{ townTodayWeatherTemperature }}°C</p>
+            <i :class="`wi ${townTodayWeatherIcon} pr-3 text-5xl md:text-6xl`"></i>
+          </div>
+          <p class="mt-1 text-xl md:text-2xl ml-4 mr-4"> Prévision aujourd'hui à {{ townName }} : {{ townTodayWeatherName }} </p>
+        </div>
+
       </div>
     </div>
   </main>
+
+  <Footer />
+
 </template>
