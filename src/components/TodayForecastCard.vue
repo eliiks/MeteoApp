@@ -1,4 +1,6 @@
 <script setup>
+    import Forecast from "@/assets/utils/Forecast.js"
+
     defineProps({
         cityName : {
             type: String,
@@ -6,12 +8,7 @@
         },
         forecast : {
             type: Object,
-            default : {
-                date : "",
-                weatherName : "",
-                weatherIcon : "",
-                temperature : 0
-            }
+            default : new Forecast()
         }
     })
 </script>
