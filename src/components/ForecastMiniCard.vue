@@ -18,7 +18,7 @@
         <div class="mt-2 h-[80%] text-xl mb-8">{{ forecast.weatherName }}</div>
         <div class="flex items-center justify-between">
             <div class="text-xl">{{ forecast.temperature }}°C</div>
-            <i :class="`wi ${forecast.weatherIcon} text-2xl pt-1 pl-3 pr-3`"></i>
+            <i :class="`wi ${forecast.weatherIcon} text-2xl pt-1`"></i>
         </div>
     </div>
 </template>
